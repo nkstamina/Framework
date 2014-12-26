@@ -1,5 +1,4 @@
 <?php
-
 namespace Nkstamina\Framework\Provider;
 
 use Nkstamina\Framework\Common\Utils;
