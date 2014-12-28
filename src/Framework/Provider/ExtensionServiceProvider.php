@@ -15,8 +15,8 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ExtensionServiceProvider implements ServiceProviderInterface
 {
-    protected static $expectedDirectories = ['Config, Controller, Model, Resources, Views'];
-    protected $extensions = [];
+    const EXTENSION_SUFFIX = '.php';
+    public $extensions;
 
     /**
      * {@inheritdoc}
@@ -24,7 +24,6 @@ class ExtensionServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['extensions'] = function () use ($app) {
-            // Get extensions directories
             return $this->getExtensions($app);
         };
     }
@@ -45,44 +44,110 @@ class ExtensionServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * Initialize extensions
+     *
+     * @throws \LogicException
+     */
+    protected function initializeExtensions()
+    {
+        $this->extensions = [];
+
+        foreach($this->registerExtensions() as $extension) {
+            $name = $extension->getName();
+
+            if (isset($this->extensions[$name])) {
+                throw new \LogicException(sprintf('Trying to register two extensions with the same name "%s"', $name));
+            }
+
+            $this->extensions[$name] = $extension;
+
+            var_dump($extension->getPath());
+        }
+
+        return $this->extensions;
+    }
+
+
+    /**
      * Return an array of extensions
      *
      * @param Container $app
      *
      * @return array
      */
-    public function getExtensions(Container $app)
+    protected function getExtensions(Container $app)
     {
-        $directories = $this->findExtensionsDirectories($app);
 
-        foreach ($directories as $directory) {
-            $extensionName                                  = $directory->getRelativePathname();
-            $this->extensions[$extensionName]['name']       = $extensionName;
-            $this->extensions[$extensionName]['pathName']   = $directory->getPathName();
-        }
 
-        return $this->extensions;
+
+
+        $extensionsFound = $this->extract($app);
+        $extensions = [];
+
+//        foreach ($extensionsFound as $extension) {
+//            $extensionPathName = $extension->getRelativePathname();
+//
+//            if (file_exists($file = $app['app.extensions.dir'].'/'.$extensionPathName)) {
+//
+//                if($content = file_get_contents($file)) {
+//
+//                $reflected = new \ReflectionClass($content);
+//                var_dump($reflected);
+//                }
+//            }
+//
+//            echo $extensionPathName;
+
+
+
+
+
+
+//            $extensionName                           = strstr($extensionPathName, '/', true);
+//            $extensions[$extensionName]['name']      = $extensionName;
+//            $extensions[$extensionName]['pathName']  = $app['app.extensions.dir'] . '/' . $extensionName;
+//            $extensions[$extensionName]['phpName']   = $extensionName . self::EXTENSION_SUFFIX;
+//            $extensions[$extensionName]['namespace'] = '\\\\' . $extensionName;
+//
+//            echo $extensionPathName;
+//
+//            $classPath = $extensions[$extensionName]['pathName'].'/'.$extensions[$extensionName]['phpName'];
+
+
+//            if (0 === strpos($classPath, 'Extensions')) {
+                //throw new \InvalidArgumentException(sprintf('', ));
+//            }
+
+            //echo $classFile . "<br>";
+//            if (file_exists($classFile)) {
+//                $content = file_get_contents($classFile);
+//
+//                var_dump($content);
+//            }
+            //$c = new $class;
+//        }
+
+        return $extensions;
     }
 
     /**
-     * Returns all valid extensions folders
+     * extract
      *
      * @param Container $app
      *
      * @return Finder
      */
-    private function findExtensionsDirectories(Container $app)
+    private function extract(Container $app)
     {
-        $directories = $app['config.finder']
+        $extensions = $app['config.finder']
             ->ignoreUnreadableDirs()
-            ->directories()
-            ->name('*Extension')
+            ->files()
+            ->name('*Extension.php')
             ->in($app['app.extensions.dir'])
-            ->depth('< 3')
             ->sortByName()
         ;
 
-        return $directories;
+        return $extensions;
     }
 }
 
