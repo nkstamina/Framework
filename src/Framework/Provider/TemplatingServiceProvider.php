@@ -28,18 +28,20 @@ class TemplatingServiceProvider implements ServiceProviderInterface
 
             $twigLoaderFs = new \Twig_Loader_Filesystem($app['twig.path']);
 
-            foreach ($app['extensions'] as $info) {
+            foreach ($app['app.extensions'] as $extension) {
 
-                if (!is_dir($templateViewDirectory = $info['pathName'].'/'.self::EXTENSION_TEMPLATE_PATH)) {
+                $templateViewDirectory = $app['app.extensions.dir'].'/'.$extension->getName().'/'.self::EXTENSION_TEMPLATE_PATH;
+
+                if (!Utils::isDirectoryValid($templateViewDirectory)) {
                     throw new InvalidTemplateDirectoryException(sprintf(
-                        '"%s" is not a directory', // @wip do we have to translate this?
+                        '"%s" is not a directory',
                         $templateViewDirectory
                     ));
                 }
 
                 $currentController = $app['request']->get('_controller');
 
-                if (strstr($currentController, '\\', true) === $info['name']) {
+                if (strtolower(strstr($currentController, '\\', true)) === strtolower($extension->getName())) {
                     $twigLoaderFs->addPath($templateViewDirectory);
                     break;
                 }
