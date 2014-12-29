@@ -8,6 +8,10 @@ use Symfony\Component\DependencyInjection\Exception\BadMethodCallException;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\Config\Resource\FileResource;
 
+/**
+ * Class Extension
+ * @package Nkstamina\Framework\Extension
+ */
 abstract class Extension implements ExtensionInterface, ConfigurationExtensionInterface
 {
     /**
@@ -19,6 +23,11 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
      * @var Extension path
      */
     public $path;
+
+    /**
+     * @var Application
+     */
+    public $application;
 
     /**
      * {@inheritdoc}
@@ -78,6 +87,13 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
         return $this->path;
     }
 
+    /**
+     * @param Application $application
+     */
+    public function setApplication(Application $application)
+    {
+        $this->application = $application;
+    }
 
     /**
      * {@inheritdoc}
@@ -101,7 +117,7 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
     }
 
     /**
-     * @param array            $config
+     * @param array $config
      *
      * @return bool    Whether the configuration is enabled
      *
