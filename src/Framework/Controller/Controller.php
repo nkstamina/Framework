@@ -102,6 +102,30 @@ class Controller implements ControllerInterface
     }
 
     /**
+     * Shortcut to return the Doctrine Pimple service.
+     *
+     * @return Pimple
+     *
+     * @throws \LogicException If DatabaseServiceProvider is not available
+     */
+    public function getDB()
+    {
+         if (!isset($this->app['db']) || null === $this->app['db']) {
+            throw new \LogicException('The DatabaseServiceProvider is not registered in your application.');
+        }
+
+        return $this->app['db'];
+    }
+
+    /**
+     * Shortcut to return the current User service
+     */
+    public function getUser()
+    {
+        //[wip]
+    }
+
+    /**
      * Returns a RedirectResponse to the given route with the given parameters.
      *
      * @param string $route      The name of the route
