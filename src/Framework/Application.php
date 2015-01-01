@@ -24,9 +24,14 @@ use Symfony\Component\Yaml\Yaml;
  */
 abstract class Application extends Container implements HttpKernelInterface, ApplicationInterface
 {
-    const VERSION = '0.1.0-DEV';
-    const EARLY_EVENT = 512;
-    const LATE_EVENT  = -512;
+    const VERSION         = '0.1.0-DEV';
+    const VERSION_ID      = '010DEV';
+    const MAJOR_VERSION   = '0';
+    const MINOR_VERSION   = '1';
+    const RELEASE_VERSION = '0';
+    const EXTRA_VERSION   = '';
+    const EARLY_EVENT     = 512;
+    const LATE_EVENT      = -512;
 
     /**
      * @var array An array of providers
@@ -54,7 +59,8 @@ abstract class Application extends Container implements HttpKernelInterface, App
 
         $app = $this;
 
-        $this['app.root.dir']       = realpath(__DIR__ . '/../../../../../');
+        #$this['app.root.dir']       = realpath(__DIR__ . '/../../../../../');
+        $this['app.root.dir']       = realpath(__DIR__ . '/../../../nkstamina');
         $this['app.extensions.dir'] = $app['app.root.dir'].'/extensions';
         $this['app.dir']            = $app['app.root.dir'].'/app';
         $this['app.config.dir']     = $app['app.dir'].'/config';
@@ -69,14 +75,14 @@ abstract class Application extends Container implements HttpKernelInterface, App
         // just set the APP_ENV environment variable:
         // in apache: SetEnv APP_ENV dev
         // in nginx with fcgi: fastcgi_param APP_ENV dev
-        $this['env']                = getenv('APP_ENV') ? : 'prod';
+        $this['env']                = getenv('APP_ENV') ? : 'dev';
 
-        $this['request.http_port']    = 80;
-        $this['request.https_port']   = 443;
-        $this['debug']                = false;
-        $this['charset']              = 'UTF-8';
-        $this['logger']               = null;
-        $this['use_cache']            = false;
+        $this['request.http_port']  = 80;
+        $this['request.https_port'] = 443;
+        $this['debug']              = false;
+        $this['charset']            = 'UTF-8';
+        $this['logger']             = null;
+        $this['use_cache']          = false;
 
         $this['resolver'] = function () use ($app) {
             return new ControllerResolver($app, $app['logger']);
@@ -145,11 +151,14 @@ abstract class Application extends Container implements HttpKernelInterface, App
     public function boot()
     {
         if (!$this->booted) {
+            // boot all providers
             foreach ($this->providers as $provider) {
                 $provider->boot($this);
             }
 
+            // boot all extensions
             foreach($this->extensions as $extension) {
+                $extension->setApplication($this);
                 $extension->boot($this);
             }
         }
@@ -295,8 +304,13 @@ abstract class Application extends Container implements HttpKernelInterface, App
         return $parameters;
     }
 
-    protected function getExtensions(Application $app)
+    /**
+     * Returns an array of all extensions loaded
+     *
+     * @return array
+     */
+    protected function getExtensions()
     {
-        return $app['app.extensions'];
+        return $this->extensions;
     }
 }
