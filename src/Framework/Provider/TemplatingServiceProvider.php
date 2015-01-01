@@ -3,9 +3,9 @@
 namespace Nkstamina\Framework\Provider;
 
 use Nkstamina\Framework\Common\Utils;
-use Nkstamina\Framework\Provider\Exception\InvalidControllerException;
 use Nkstamina\Framework\ServiceProviderInterface;
 use Nkstamina\Framework\Provider\Exception\InvalidTemplateDirectoryException;
+use Nkstamina\Framework\Extension\Exception\InvalidExtensionException;
 use Pimple\Container;
 
 /**
@@ -30,8 +30,13 @@ class TemplatingServiceProvider implements ServiceProviderInterface
             $twigLoaderFs = new \Twig_Loader_Filesystem($app['twig.path']);
 
             $currentController = $app['request']->get('_controller');
+            $found = false;
+            $templateViewDirectory = '';
+
             foreach($app['app.extensions'] as $name => $object) {
+
                 if (false !== strpos($currentController, $name)) {
+
                     $templateViewDirectory = $object->getPath().'/'.self::EXTENSION_TEMPLATE_PATH;
 
                     if (!Utils::isDirectoryValid($templateViewDirectory)) {
@@ -41,13 +46,20 @@ class TemplatingServiceProvider implements ServiceProviderInterface
                         ));
                     }
 
-                    $twigLoaderFs->addPath($templateViewDirectory);
-                    $loaders[] = $twigLoaderFs;
-
+                    $found = true;
                     break;
                 }
             }
 
+            if (!$found) {
+                throw new InvalidExtensionException(sprintf(
+                    'No extension found to manage controller "%s". Please check its spell in your routing.yml file or create a valid extension for this controller',
+                    $currentController
+                ));
+            }
+
+            $twigLoaderFs->addPath($templateViewDirectory);
+            $loaders[] = $twigLoaderFs;
             $loaders[] = new \Twig_Loader_Array($app['twig.templates']);
 
             return new \Twig_Loader_Chain($loaders);
