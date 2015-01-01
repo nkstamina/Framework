@@ -1,6 +1,6 @@
 <?php
 
-namespace Nkstamina\Framework\Provider\Exception;
+namespace Nkstamina\Framework\Controller\Exception;
 
 class InvalidControllerException extends \Exception
 {
