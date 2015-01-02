@@ -1,0 +1,20 @@
+language: php
+
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+
+before_script:
+  - composer install --dev
+  - pear install --alldeps PHP_CodeSniffer
+  - phpenv rehash
+
+script:
+  - phpunit
+  - phpcs --standard=PSR2 --ignore=/vendor ./
+
+notifications:
+  email:
+    - maclovr75@gmail.com
+    - thorenx@hotmail.fr
