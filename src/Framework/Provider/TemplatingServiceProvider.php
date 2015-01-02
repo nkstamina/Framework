@@ -51,7 +51,8 @@ class TemplatingServiceProvider implements ServiceProviderInterface
 
             if (!$found) {
                 throw new InvalidExtensionException(sprintf(
-                    'No extension found to manage controller "%s". Please check its spell in your routing.yml file or create a valid extension for this controller',
+                    'No extension found to manage controller "%s". Please check its spell in your routing.yml file
+                    or create a valid extension for this controller',
                     $currentController
                 ));
             }

@@ -96,10 +96,6 @@ abstract class Application extends Container implements HttpKernelInterface, App
             return new HttpKernel($app['dispatcher'], $app['resolver']);
         };
 
-        $this['request_error'] = $this->protect(function () {
-            throw new \RuntimeException('Accessed request service outside of request scope. Try moving that call to a before handler or controller.');
-        });
-
         $this['request'] = $this['request_error'];
 
         $this->register(new ConfigServiceProvider());
@@ -261,7 +257,9 @@ abstract class Application extends Container implements HttpKernelInterface, App
             }
 
             if (0 === strpos($extension->getPath(), 'extensions')) {
-                throw new \LogicException(sprintf('The extension "%s" shoud be installed in the "%s" directory', $name, $this['app.extensions.dir']));
+                throw new \LogicException(sprintf(
+                    'The extension "%s" should be installed in the "%s" directory', $name, $this['app.extensions.dir']
+                ));
             }
 
             $this->extensions[$name] = $extension;
