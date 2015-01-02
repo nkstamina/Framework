@@ -258,7 +258,9 @@ abstract class Application extends Container implements HttpKernelInterface, App
 
             if (0 === strpos($extension->getPath(), 'extensions')) {
                 throw new \LogicException(sprintf(
-                    'The extension "%s" should be installed in the "%s" directory', $name, $this['app.extensions.dir']
+                    'The extension "%s" should be installed in the "%s" directory',
+                    $name,
+                    $this['app.extensions.dir']
                 ));
             }
 
