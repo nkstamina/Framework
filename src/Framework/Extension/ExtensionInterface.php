@@ -1,17 +1,17 @@
 <?php
 namespace Nkstamina\Framework\Extension;
 
-use Nkstamina\Framework\Application;
-
 interface ExtensionInterface
 {
     /**
      * Boots the Extension
+     * @return void
      */
     public function boot();
 
     /**
      * Shutdowns the Extension
+     * @return void
      */
     public function shutdown();
 }

@@ -9,7 +9,7 @@ interface ControllerInterface
      * @param       $name
      * @param array $value
      *
-     * @return mixed
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function render($name, array $value = []);
 }
