@@ -28,4 +28,4 @@ interface ServiceProviderInterface extends BaseServiceProviderInterface
      */
     public function getName();
 
-} 
+}

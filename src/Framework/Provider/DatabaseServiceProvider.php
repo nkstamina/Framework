@@ -48,4 +48,3 @@ class DatabaseServiceProvider implements ServiceProviderInterface
     }
 }
 
-

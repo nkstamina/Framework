@@ -50,4 +50,3 @@ class ControllerResolver extends BaseControllerResolver
         return array($controller, $method);
     }
 }
-

@@ -133,4 +133,3 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
         //return (bool) $container->getParameterBag()->resolveValue($config['enabled']);
     }
 }
-
