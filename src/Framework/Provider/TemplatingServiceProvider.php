@@ -5,6 +5,7 @@ namespace Nkstamina\Framework\Provider;
 use Nkstamina\Framework\Common\Utils;
 use Nkstamina\Framework\ServiceProviderInterface;
 use Nkstamina\Framework\Provider\Exception\InvalidTemplateDirectoryException;
+use Nkstamina\Framework\Extension\Exception\InvalidExtensionException;
 use Pimple\Container;
 
 /**
@@ -28,23 +29,36 @@ class TemplatingServiceProvider implements ServiceProviderInterface
 
             $twigLoaderFs = new \Twig_Loader_Filesystem($app['twig.path']);
 
-            foreach ($app['extensions'] as $info) {
+            $currentController = $app['request']->get('_controller');
+            $found = false;
+            $templateViewDirectory = '';
 
-                if (!is_dir($templateViewDirectory = $info['pathName'].'/'.self::EXTENSION_TEMPLATE_PATH)) {
-                    throw new InvalidTemplateDirectoryException(sprintf(
-                        '"%s" is not a directory', // @wip do we have to translate this?
-                        $templateViewDirectory
-                    ));
-                }
+            foreach($app['app.extensions'] as $name => $object) {
 
-                $currentController = $app['request']->get('_controller');
+                if (false !== strpos($currentController, $name)) {
 
-                if (strstr($currentController, '\\', true) === $info['name']) {
-                    $twigLoaderFs->addPath($templateViewDirectory);
+                    $templateViewDirectory = $object->getPath().'/'.self::EXTENSION_TEMPLATE_PATH;
+
+                    if (!Utils::isDirectoryValid($templateViewDirectory)) {
+                        throw new InvalidTemplateDirectoryException(sprintf(
+                            '"%s" is not a directory',
+                            $templateViewDirectory
+                        ));
+                    }
+
+                    $found = true;
                     break;
                 }
             }
 
+            if (!$found) {
+                throw new InvalidExtensionException(sprintf(
+                    'No extension found to manage controller "%s". Please check its spell in your routing.yml file or create a valid extension for this controller',
+                    $currentController
+                ));
+            }
+
+            $twigLoaderFs->addPath($templateViewDirectory);
             $loaders[] = $twigLoaderFs;
             $loaders[] = new \Twig_Loader_Array($app['twig.templates']);
 

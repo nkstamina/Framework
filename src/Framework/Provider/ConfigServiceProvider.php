@@ -1,5 +1,4 @@
 <?php
-
 namespace Nkstamina\Framework\Provider;
 
 use Nkstamina\Framework\ServiceProviderInterface;
@@ -23,7 +22,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
         $configDirectories = [$app['app.config.dir']];
         $locator = new FileLocator($configDirectories);
 
-        // Loads routes files
+        // loader
         $app['config.loader'] = function ($app) use ($locator) {
             // load only *.yml files?
             $loader =  new YamlFileLoader($locator);

@@ -1,5 +1,4 @@
 <?php
-
 namespace Nkstamina\Framework;
 
 use Pimple\ServiceProviderInterface as BaseServiceProviderInterface;
