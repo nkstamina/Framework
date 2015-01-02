@@ -110,7 +110,7 @@ class Controller implements ControllerInterface
      */
     public function getDB()
     {
-         if (!isset($this->app['db']) || null === $this->app['db']) {
+        if (!isset($this->app['db']) || null === $this->app['db']) {
             throw new \LogicException('The DatabaseServiceProvider is not registered in your application.');
         }
 

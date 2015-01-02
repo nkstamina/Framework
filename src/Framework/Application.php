@@ -103,10 +103,10 @@ abstract class Application extends Container implements HttpKernelInterface, App
 
         $this['request'] = $this['request_error'];
 
-        $this->register(new ConfigServiceProvider($app));
-        $this->register(new RoutingServiceProvider($app));
-        $this->register(new TemplatingServiceProvider($app));
-        $this->register(new DatabaseServiceProvider($app));
+        $this->register(new ConfigServiceProvider());
+        $this->register(new RoutingServiceProvider());
+        $this->register(new TemplatingServiceProvider());
+        $this->register(new DatabaseServiceProvider());
 
         // load Application's configuration parameters
         $this['app.parameters'] = $app->factory(function () use ($app) {
@@ -115,7 +115,7 @@ abstract class Application extends Container implements HttpKernelInterface, App
 
         // Load Application's extensions
         $this['app.extensions'] = $app->factory(function () use ($app) {
-            return $this->initializeExtensions($app);
+            return $this->initializeExtensions();
         });
 
         $this['dispatcher']->addSubscriber(new RouterListener($app['matcher']));
@@ -157,7 +157,7 @@ abstract class Application extends Container implements HttpKernelInterface, App
             }
 
             // boot all extensions
-            foreach($this->extensions as $extension) {
+            foreach ($this->extensions as $extension) {
                 $extension->setApplication($this);
                 $extension->boot($this);
             }
@@ -254,7 +254,7 @@ abstract class Application extends Container implements HttpKernelInterface, App
     {
         $this->extensions = [];
 
-        foreach($this->registerExtensions() as $extension) {
+        foreach ($this->registerExtensions() as $extension) {
             $name = $extension->getName();
 
             if (isset($this->extensions[$name])) {

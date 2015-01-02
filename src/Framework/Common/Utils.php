@@ -17,7 +17,7 @@ class Utils
      */
     public static function isDirectoryValid($directory)
     {
-        if (!is_dir($directory) OR !is_readable($directory)) {
+        if (!is_dir($directory) or !is_readable($directory)) {
             throw new \Exception(sprintf(
                 'Directory "%s" is not readable or does not exit', // @wip do we have to translate this?
                 $directory
@@ -26,4 +26,4 @@ class Utils
 
         return true;
     }
-} 
+}
