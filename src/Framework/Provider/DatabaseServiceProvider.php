@@ -47,4 +47,3 @@ class DatabaseServiceProvider implements ServiceProviderInterface
         return 'database_service_provider';
     }
 }
-
