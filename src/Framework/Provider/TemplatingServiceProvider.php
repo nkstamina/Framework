@@ -33,10 +33,8 @@ class TemplatingServiceProvider implements ServiceProviderInterface
             $found = false;
             $templateViewDirectory = '';
 
-            foreach($app['app.extensions'] as $name => $object) {
-
+            foreach ($app['app.extensions'] as $name => $object) {
                 if (false !== strpos($currentController, $name)) {
-
                     $templateViewDirectory = $object->getPath().'/'.self::EXTENSION_TEMPLATE_PATH;
 
                     if (!Utils::isDirectoryValid($templateViewDirectory)) {
@@ -72,7 +70,6 @@ class TemplatingServiceProvider implements ServiceProviderInterface
             $options = [];
             if ($isTemplateMustBeCached &&
                 $this->isTemplateCacheDirectoryValid($templateCacheDirectory)) {
-
                 $options = ['cache' => $templateCacheDirectory];
             }
 
@@ -111,4 +108,4 @@ class TemplatingServiceProvider implements ServiceProviderInterface
     {
         return Utils::isDirectoryValid($directory);
     }
-} 
+}
