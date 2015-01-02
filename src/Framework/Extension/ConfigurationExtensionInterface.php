@@ -15,4 +15,4 @@ interface ConfigurationExtensionInterface
      * @return ConfigurationInterface|null The configuration or null
      */
     public function getConfiguration(array $config, Application $app);
-} 
+}

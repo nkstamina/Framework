@@ -9,4 +9,4 @@ interface ApplicationInterface
      * @return ExtensionInterface[] An array of extensions instances.
      */
     public function registerExtensions();
-} 
+}

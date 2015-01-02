@@ -12,4 +12,4 @@ interface ControllerInterface
      * @return mixed
      */
     public function render($name, array $value = []);
-} 
+}

@@ -67,7 +67,7 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
         }
 
         $name = get_class($this);
-        $pos = strrpos($name, '\\');
+        $pos  = strrpos($name, '\\');
 
         return $this->name = false === $pos ? $name : substr($name, $pos + 1);
     }
@@ -80,7 +80,7 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
     public function getPath()
     {
         if (null === $this->path) {
-            $reflected = new \ReflectionObject($this);
+            $reflected  = new \ReflectionObject($this);
             $this->path = dirname($reflected->getFileName());
         }
 
@@ -105,7 +105,8 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
 
         $class = $namespace.'\\Configuration';
         if (class_exists($class)) {
-            $r = new \ReflectionClass($class);
+            // [wip]
+            //$r = new \ReflectionClass($class);
             //$container->addResource(new FileResource($r->getFileName()));
 
             if (!method_exists($class, '__construct')) {
@@ -131,4 +132,4 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
 
         //return (bool) $container->getParameterBag()->resolveValue($config['enabled']);
     }
-} 
+}

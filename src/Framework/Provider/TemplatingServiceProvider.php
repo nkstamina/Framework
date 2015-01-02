@@ -33,10 +33,8 @@ class TemplatingServiceProvider implements ServiceProviderInterface
             $found = false;
             $templateViewDirectory = '';
 
-            foreach($app['app.extensions'] as $name => $object) {
-
+            foreach ($app['app.extensions'] as $name => $object) {
                 if (false !== strpos($currentController, $name)) {
-
                     $templateViewDirectory = $object->getPath().'/'.self::EXTENSION_TEMPLATE_PATH;
 
                     if (!Utils::isDirectoryValid($templateViewDirectory)) {
@@ -53,7 +51,8 @@ class TemplatingServiceProvider implements ServiceProviderInterface
 
             if (!$found) {
                 throw new InvalidExtensionException(sprintf(
-                    'No extension found to manage controller "%s". Please check its spell in your routing.yml file or create a valid extension for this controller',
+                    'No extension found to manage controller "%s". Please check its spell in your routing.yml file
+                    or create a valid extension for this controller',
                     $currentController
                 ));
             }
@@ -72,7 +71,6 @@ class TemplatingServiceProvider implements ServiceProviderInterface
             $options = [];
             if ($isTemplateMustBeCached &&
                 $this->isTemplateCacheDirectoryValid($templateCacheDirectory)) {
-
                 $options = ['cache' => $templateCacheDirectory];
             }
 
@@ -111,4 +109,4 @@ class TemplatingServiceProvider implements ServiceProviderInterface
     {
         return Utils::isDirectoryValid($directory);
     }
-} 
+}
