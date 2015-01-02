@@ -27,5 +27,4 @@ interface ServiceProviderInterface extends BaseServiceProviderInterface
      * @return mixed
      */
     public function getName();
-
 }
