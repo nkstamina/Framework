@@ -1,8 +1,8 @@
 The NkStamina Framework
 =======================
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nkstamina/Framework/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/nkstamina/Framework/?branch=develop)
+* Scrutinizer [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nkstamina/Framework/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/nkstamina/Framework/?branch=develop)
 [![Build Status](https://scrutinizer-ci.com/g/nkstamina/Framework/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/nkstamina/Framework/build-status/develop)
-[![Build Status](https://travis-ci.org/nkstamina/Framework.svg?branch=develop)](https://travis-ci.org/nkstamina/Framework)
+* Travis CI [![Build Status](https://travis-ci.org/nkstamina/Framework.svg?branch=develop)](https://travis-ci.org/nkstamina/Framework)
 
 ## NKstamina Framework Core Prerequisites
 -----------------------------------------
